@@ -1,0 +1,12 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff008a" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <!-- Stylized C -->
+  <path d="M100 65H70C53.4315 65 40 78.4315 40 95C40 111.569 53.4315 125 70 125H100" stroke="url(#logo-gradient)" stroke-width="16" stroke-linecap="round"/>
+  <!-- Stylized N - Diagonal and Right Stem -->
+  <path d="M100 65L140 125V65" stroke="url(#logo-gradient)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

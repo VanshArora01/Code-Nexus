@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚡ CODE NEXUS — Automate. Build. Scale.
 
-## Getting Started
+**Code Nexus** is a high-performance, premium digital agency landing page built for the next generation of businesses. We specialize in AI automation, custom web builds, and SEO-driven growth loops.
 
-First, run the development server:
+![Code Nexus Preview](/public/logo.svg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 The Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Built with a modern, production-ready engineering stack for speed and stability:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: [Next.js 15+](https://nextjs.org/) (App Router)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/) + Custom Glassmorphism
+- **Animations**: [GSAP](https://greensock.com/gsap/) + [ScrollTrigger](https://greensock.com/scrolltrigger/) + [Framer Motion](https://www.framer.com/motion/)
+- **Forms**: [Formspree](https://formspree.io/) + [Zod](https://zod.dev/) (Type-safe validation)
+- **Infrastructure**: [Cloudinary](https://cloudinary.com/) (Secure resume uploads)
+- **Type Safety**: 100% [TypeScript](https://www.typescript.org/)
+- **Performance**: [Lenis](https://lenis.darkroom.engineering/) (Global smooth scrolling)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+- **Hardened Forms**: Enterprise-grade validation with Zod and anti-spam Honeypot protection.
+- **Security**: IP-based rate limiting on all submission routes.
+- **Dynamic Work Showcase**: Cinematic GSAP-powered horizontal and vertical scroll interactions.
+- **Secure File Handling**: Validated resume uploads directly to Cloudinary via raw storage.
+- **Responsive Branding**: Scalable SVG monogram logo with a premium pink-to-purple gradient.
+- **SEO Optimized**: Dynamic `sitemap.xml`, `robots.txt`, and structured metadata.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Local Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/code-nexus.git
+   ```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Configure Environment**:
+   Create a `.env.local` file:
+   ```env
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+   NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_preset
+   ```
+4. **Run the dev server**:
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚢 Deployment
 
-## Deploy on Vercel
+Optimized for **Vercel** deployment. Simply connect your GitHub repository and add your environment variables.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with obsession by the **Code Nexus** team. 
+*Ludhiana · Remote-first · Detail-obsessed*
