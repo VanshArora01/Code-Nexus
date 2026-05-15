@@ -66,9 +66,7 @@ function ServicePanel({
   const tint = BG_TINTS[index % BG_TINTS.length] ?? BG_TINTS[0];
 
   return (
-    <div
-      className="service-panel relative flex h-[100dvh] w-screen shrink-0 flex-col md:flex-row"
-    >
+    <div className="service-panel relative flex h-[100dvh] w-screen shrink-0 flex-col md:flex-row">
       <div className="flex flex-1 flex-col justify-center px-6 py-16 md:w-1/2 md:px-12 lg:px-16">
         <span
           className="pointer-events-none absolute left-4 top-24 font-heading font-black leading-none text-transparent opacity-[0.15] md:left-10 md:top-32"
@@ -212,7 +210,13 @@ function MobileCardContent({
   );
 }
 
-function MobileServicesStack(): ReactElement {
+function MobileServicesStack({
+  active,
+  setActive,
+}: {
+  active: number;
+  setActive: (i: number) => void;
+}): ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
@@ -238,6 +242,13 @@ function MobileServicesStack(): ReactElement {
           end: "bottom bottom",
           scrub: 0.4,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const next = Math.min(
+              SERVICE_ITEMS.length - 1,
+              Math.max(0, Math.floor(self.progress * SERVICE_ITEMS.length + 0.1))
+            );
+            setActive(next);
+          },
         },
       });
 
@@ -248,7 +259,7 @@ function MobileServicesStack(): ReactElement {
     }, container);
 
     return () => ctx.revert();
-  }, []);
+  }, [setActive]);
 
   return (
     <div
@@ -285,6 +296,22 @@ function MobileServicesStack(): ReactElement {
             <MobileCardContent service={service} index={index} />
           </div>
         ))}
+
+        <div
+          className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2"
+          aria-hidden
+        >
+          {SERVICE_ITEMS.map((s, i) => (
+            <div
+              key={s.id}
+              className={
+                i === active
+                  ? "h-1.5 w-6 rounded-full bg-gradient-to-r from-pink to-purple opacity-100 transition-all duration-300"
+                  : "h-1.5 w-1.5 rounded-full bg-white/20 transition-all duration-300"
+              }
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -306,19 +333,18 @@ export function ServicesHorizontalScroll(): ReactElement {
     if (!container || !sticky || !horizontal) return;
 
     const ctx = gsap.context(() => {
-      // Horizontal Scroll Timeline
+      // Desktop Horizontal Scroll
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
           end: () => `+=${horizontal.offsetWidth - window.innerWidth}`,
-          pin: true,
           scrub: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const next = Math.min(
               SERVICE_ITEMS.length - 1,
-              Math.max(0, Math.floor(self.progress * SERVICE_ITEMS.length + 0.01))
+              Math.max(0, Math.round(self.progress * (SERVICE_ITEMS.length - 1)))
             );
             setActive(next);
           },
@@ -336,10 +362,10 @@ export function ServicesHorizontalScroll(): ReactElement {
 
       const performSwipe = () => {
         if (isSwiping || document.hidden) return;
-        const st = ScrollTrigger.getAll().find(s => s.trigger === container);
+        const st = ScrollTrigger.getAll().find((s) => s.trigger === container);
         if (!st || !st.isActive) return;
 
-        const currentCard = Math.floor(st.progress * SERVICE_ITEMS.length + 0.1);
+        const currentCard = Math.round(st.progress * (SERVICE_ITEMS.length - 1));
         if (currentCard < SERVICE_ITEMS.length - 1) {
           isSwiping = true;
           const targetProgress = (currentCard + 1) / (SERVICE_ITEMS.length - 1);
@@ -351,12 +377,12 @@ export function ServicesHorizontalScroll(): ReactElement {
             ease: "power2.inOut",
             onComplete: () => {
               isSwiping = false;
-              timer = setTimeout(performSwipe, 5000);
+              timer = setTimeout(performSwipe, 6000);
             },
             onInterrupt: () => {
               isSwiping = false;
               resetTimers();
-            }
+            },
           });
         }
       };
@@ -367,12 +393,13 @@ export function ServicesHorizontalScroll(): ReactElement {
           isSwiping = false;
         }
         clearTimeout(timer);
-        timer = setTimeout(performSwipe, 6000);
+        timer = setTimeout(performSwipe, 7000);
       };
 
       window.addEventListener("wheel", resetTimers, { passive: true });
       window.addEventListener("touchstart", resetTimers, { passive: true });
-      
+      window.addEventListener("scroll", () => { if(!isSwiping) resetTimers(); }, { passive: true });
+
       timer = setTimeout(performSwipe, 6000);
 
       return () => {
@@ -388,8 +415,12 @@ export function ServicesHorizontalScroll(): ReactElement {
   return (
     <>
       {/* Desktop Horizontal Scroll */}
-      <div ref={containerRef} className="relative hidden md:block">
-        <div ref={stickyRef} className="h-[100dvh] overflow-hidden bg-[#050505]">
+      <div
+        ref={containerRef}
+        className="relative hidden md:block"
+        style={{ height: `${SERVICE_ITEMS.length * 100}vh` }}
+      >
+        <div ref={stickyRef} className="sticky top-0 h-[100dvh] overflow-hidden bg-[#050505]">
           <div ref={horizontalRef} className="flex h-full will-change-transform">
             {SERVICE_ITEMS.map((service, index) => (
               <ServicePanel key={service.id} service={service} index={index} />
@@ -415,8 +446,7 @@ export function ServicesHorizontalScroll(): ReactElement {
       </div>
 
       {/* Mobile — GSAP stacked progressive overlap */}
-      <MobileServicesStack />
+      <MobileServicesStack active={active} setActive={setActive} />
     </>
   );
 }
-
