@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const revalidate = 3600;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thecodenexus.qzz.io";
   
@@ -12,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString().split(".")[0] + "Z",
     changeFrequency: "weekly" as const,
     priority: route === "" ? 1 : 0.8,
   }));
