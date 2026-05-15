@@ -723,6 +723,94 @@
 
 
 
+/* ─── Mobile Performance Optimizations ───────────────────────────────────────
+   Stop expensive CSS animations that either:
+   a) are on elements hidden on mobile (hidden md:block), or
+   b) run continuously in the background, draining battery and jank-ing scroll.
+   Zero visual difference on phones.
+──────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Breathing glow orbs in Hero — large blur + scale animation, invisible ROI on mobile */
+  [style*="animation: breathe"],
+  [style*="animation: breatheSlow"],
+  [style*="animation: breatheFast"] {
+    animation: none !important;
+  }
+
+  /* Floating cube + inner cube rotation — only shown lg:flex anyway */
+  [style*="animation: floatCube"],
+  [style*="animation: rotateCube"],
+  [style*="animation: rotateInner"],
+  [style*="animation: edgeGlow"],
+  [style*="animation: corePulse"],
+  [style*="animation: energyRing"],
+  [style*="animation: dataStream"] {
+    animation: none !important;
+  }
+
+  /* Floating particles in Hero (only desktop) */
+  [style*="animation: floatUp"] {
+    animation: none !important;
+    display: none !important;
+  }
+
+  /* Service shape spinner — visible on mobile but continuous GPU animation is wasteful */
+  .service-panel-shape {
+    animation: none !important;
+  }
+
+  /* Careers section — none of these are needed on mobile */
+  .careers-aurora,
+  .careers-grid-drift,
+  .careers-orb,
+  .careers-scanline::after {
+    animation: none !important;
+  }
+
+  /* Work page decorative spinners */
+  .work-deco-spin,
+  .work-deco-spin-reverse {
+    animation: none !important;
+  }
+
+  /* CTA float animations */
+  .cta-geom,
+  .home-cta-float {
+    animation: none !important;
+  }
+
+  /* Reduce marquee speed on mobile for smoother rendering */
+  .trust-marquee-l {
+    animation-duration: 80s !important;
+  }
+  .trust-marquee-r {
+    animation-duration: 65s !important;
+  }
+  .marquee-track {
+    animation-duration: 72s !important;
+  }
+  .marquee-track-reverse {
+    animation-duration: 84s !important;
+  }
+
+  /* content-visibility: auto defers layout/paint of off-screen sections */
+  section:not(:first-child) {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px;
+  }
+
+  /* Improve scroll performance — prevent hover effects from triggering on touch */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Disable backdrop-filter on elements where it's purely decorative on mobile */
+  .careers-orb {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .careers-aurora,
   .careers-grid-drift,

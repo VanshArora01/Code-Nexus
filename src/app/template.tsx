@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import {
-  useLayoutEffect,
+  useEffect,
   type ReactNode,
 } from "react";
 
@@ -16,8 +16,10 @@ type PageTemplateProps = {
 export default function Template({ children }: PageTemplateProps): ReactNode {
   const pathname = usePathname();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     registerGsapPlugins();
+    // Skip ScrollTrigger refresh on mobile — fewer instances, saves a main-thread cycle
+    if (window.innerWidth < 768) return;
     const id = requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });

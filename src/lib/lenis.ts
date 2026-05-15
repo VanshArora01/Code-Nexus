@@ -16,12 +16,12 @@ export function useLenis(): void {
   const pathname = usePathname();
 
   useEffect(() => {
-    registerGsapPlugins();
-
     // Disable Lenis on mobile for performance
     if (window.innerWidth < 768) {
       return;
     }
+
+    registerGsapPlugins();
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -52,6 +52,9 @@ export function useLenis(): void {
     const lenis = getGlobalLenis();
     if (lenis) {
       lenis.scrollTo(0, { immediate: true });
+    } else {
+      // Fallback for mobile (Lenis disabled) – native instant scroll to top
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   }, [pathname]);
 }

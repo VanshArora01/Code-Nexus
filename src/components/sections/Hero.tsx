@@ -596,7 +596,6 @@ export default function Hero(): ReactElement {
         <div
           ref={topHalfRef}
           className="absolute left-0 right-0 top-0 z-10 h-[45%] overflow-hidden md:will-change-transform bg-[#0a0a0f]"
-          style={{ willChange: "transform" }}
         >
           <HeroBackground />
           <div
@@ -643,7 +642,6 @@ export default function Hero(): ReactElement {
         <div
           ref={bottomHalfRef}
           className="absolute bottom-0 left-0 right-0 z-10 h-[55%] overflow-hidden md:will-change-transform bg-[#0a0a0f]"
-          style={{ willChange: "transform" }}
         >
           <HeroBackground />
           <div

@@ -50,6 +50,11 @@ export function WorkShowcase(): ReactElement {
     () => {
       registerGsapPlugins();
 
+      // Skip heavy GSAP animations on mobile — they're invisible anyway (hidden md:block)
+      // and create many ScrollTrigger instances that throttle the main thread.
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) return;
+
       gsap.from(".work-hero-eyebrow", {
         opacity: 0,
         y: 22,
