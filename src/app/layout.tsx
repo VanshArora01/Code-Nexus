@@ -115,7 +115,7 @@ export default function RootLayout({
         </SmoothScroll>
         <StructuredData />
       </body>
-      <GoogleAnalytics gaId="G-9WVWPBCZEB" />
+      <GoogleAnalytics gaId="G-WEGQNZMYF6" />
     </html>
   );
 }

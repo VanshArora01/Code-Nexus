@@ -4,7 +4,7 @@
  * Only fires in production; silently no-ops in development.
  */
 
-const GA_ID = "G-9WVWPBCZEB";
+const GA_ID = "G-WEGQNZMYF6";
 
 // ─── Low-level gtag wrapper ─────────────────────────────────────────────────
 
