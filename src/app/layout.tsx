@@ -7,7 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { StructuredData } from "@/components/seo/StructuredData";
 
-import { GA_ID } from "@/lib/analytics";
+
 
 import "./globals.css";
 
@@ -114,9 +114,8 @@ export default function RootLayout({
           </div>
         </SmoothScroll>
         <StructuredData />
-        {/* Google Analytics 4 — loads only in production via @next/third-parties */}
-        {process.env.NODE_ENV === "production" && <GoogleAnalytics gaId={GA_ID} />}
       </body>
+      <GoogleAnalytics gaId="G-9WVWPBCZEB" />
     </html>
   );
 }
