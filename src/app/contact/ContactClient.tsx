@@ -13,6 +13,7 @@ import {
 } from "react";
 
 import { SITE_EMAIL, SITE_SOCIAL } from "@/lib/site-social";
+import { trackContactFormSubmit } from "@/lib/analytics";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -287,10 +288,11 @@ export default function ContactPageClient(): ReactElement {
     localStorage.setItem("contact-form", JSON.stringify(form));
   }, [form]);
 
-  // Clear on success
+  // Clear on success + fire GA4 event
   useEffect(() => {
     if (state.succeeded) {
       localStorage.removeItem("contact-form");
+      trackContactFormSubmit();
     }
   }, [state.succeeded]);
 

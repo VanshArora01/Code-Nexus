@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
-
-import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { Suspense } from "react";
+
+import { GA_ID } from "@/lib/analytics";
 
 import "./globals.css";
 
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: "X5N5AYqIyLKar8XLJQRIJM8T1hWZXozKvrYhSOheOI4",
   },
   icons: {
     icon: "/image.png",
@@ -104,12 +104,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <link rel="preconnect" href="https://www.googletagmanager.com" />
-            <link rel="preconnect" href="https://www.google-analytics.com" />
-          </>
-        )}
       </head>
       <body className="min-h-full bg-bg font-dm text-white antialiased">
         <SmoothScroll>
@@ -119,10 +113,9 @@ export default function RootLayout({
             <Footer />
           </div>
         </SmoothScroll>
-        <Suspense>
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
-        </Suspense>
         <StructuredData />
+        {/* Google Analytics 4 — loads only in production via @next/third-parties */}
+        {process.env.NODE_ENV === "production" && <GoogleAnalytics gaId={GA_ID} />}
       </body>
     </html>
   );

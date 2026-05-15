@@ -23,6 +23,7 @@ import { registerGsapPlugins, ScrollTrigger } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { UploadStatus } from "@/types/cloudinary";
+import { trackCareerFormSubmit } from "@/lib/analytics";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const view = {
@@ -361,10 +362,11 @@ export function CareersClient(): ReactElement {
     localStorage.setItem("careers-form", JSON.stringify(form));
   }, [form]);
 
-  // Clear on success
+  // Clear on success + fire GA4 event
   useEffect(() => {
     if (state.succeeded) {
       localStorage.removeItem("careers-form");
+      trackCareerFormSubmit(form.role || undefined);
     }
   }, [state.succeeded]);
 
