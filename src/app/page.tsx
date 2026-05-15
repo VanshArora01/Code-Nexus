@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactElement } from "react";
 
-import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
-
-const HomeTrustMarquee = dynamic(() => import("@/components/sections/HomePageContent").then(mod => mod.HomeTrustMarquee));
-const HomeServicesShowcase = dynamic(() => import("@/components/sections/HomePageContent").then(mod => mod.HomeServicesShowcase));
-const HomeHowItWorks = dynamic(() => import("@/components/sections/HomeExtraSections").then(mod => mod.HomeHowItWorks));
-const HomeTechApproach = dynamic(() => import("@/components/sections/HomeExtraSections").then(mod => mod.HomeTechApproach));
-const HomeCTA = dynamic(() => import("@/components/sections/HomeCTA").then(mod => mod.HomeCTA));
+import { HomeTrustMarquee, HomeServicesShowcase } from "@/components/sections/HomePageContent";
+import { HomeHowItWorks, HomeTechApproach } from "@/components/sections/HomeExtraSections";
+import { HomeCTA } from "@/components/sections/HomeCTA";
 
 export const metadata: Metadata = {
   title: "The Code Nexus | AI Automation, Website Development & SEO Solutions in Ludhiana",
