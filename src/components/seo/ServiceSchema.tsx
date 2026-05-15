@@ -34,7 +34,7 @@ export function ServiceSchema(): ReactElement {
           "itemOffered": {
             "@type": "Service",
             "name": "AI Automation",
-            "description": "Smart business automation systems powered by AI."
+            "description": "Smart business automation pipelines powered by AI."
           }
         },
         {

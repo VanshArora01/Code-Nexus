@@ -220,6 +220,15 @@ export function ServicesHorizontalScroll(): ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
+
+  // Helper to prevent duplicate state updates
+  const safeSetActive = (index: number) => {
+    if (index !== activeRef.current) {
+      activeRef.current = index;
+      setActive(index);
+    }
+  };
 
   useEffect(() => {
     if (
@@ -234,17 +243,18 @@ export function ServicesHorizontalScroll(): ReactElement {
     const container = containerRef.current;
     const sticky = stickyRef.current;
 
-    const cards = gsap.utils.toArray<HTMLElement>(
-      ".svc-card-stack",
-      sticky
-    );
+    const cards = gsap.utils.toArray<HTMLElement>(".svc-card-stack", sticky);
     const totalCards = cards.length;
     if (totalCards < 2) return;
 
-    // Set initial positions
-    cards.forEach((card, i) => {
-      gsap.set(card, { yPercent: i === 0 ? 0 : 100 });
-    });
+    // SET INITIAL POSITIONS FIRST — before ScrollTrigger exists
+    gsap.set(cards[0], { yPercent: 0 });
+    for (let i = 1; i < totalCards; i++) {
+      gsap.set(cards[i], { yPercent: 100 });
+    }
+
+    // Force active to 0 initially
+    safeSetActive(0);
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -253,38 +263,39 @@ export function ServicesHorizontalScroll(): ReactElement {
           start: "top top",
           end: "bottom bottom",
           scrub: 0.6,
-          // NO pin: true here — CSS sticky handles pinning
           invalidateOnRefresh: true,
           snap: {
             snapTo: 1 / (totalCards - 1),
             duration: { min: 0.3, max: 0.5 },
-            delay: 0.05,
+            delay: 0.08,
             ease: "power2.inOut",
           },
           onUpdate: (self) => {
+            // Only update if scroll has actually started
+            if (self.progress < 0.001 && self.direction !== 1) {
+              safeSetActive(0);
+              return;
+            }
+
             const next = Math.min(
               totalCards - 1,
-              Math.max(
-                0,
-                Math.round(self.progress * (totalCards - 1))
-              )
+              Math.max(0, Math.round(self.progress * (totalCards - 1)))
             );
-            setActive(next);
+            safeSetActive(next);
+          },
+          onScrubComplete: (self) => {
+            const final = Math.min(
+              totalCards - 1,
+              Math.max(0, Math.round(self.progress * (totalCards - 1)))
+            );
+            safeSetActive(final);
           },
         },
       });
 
       for (let i = 0; i < totalCards - 1; i++) {
-        tl.to(
-          cards[i],
-          { yPercent: -62, ease: "none", duration: 1 },
-          i
-        );
-        tl.to(
-          cards[i + 1],
-          { yPercent: 0, ease: "none", duration: 1 },
-          i
-        );
+        tl.to(cards[i], { yPercent: -62, ease: "none", duration: 1 }, i);
+        tl.to(cards[i + 1], { yPercent: 0, ease: "none", duration: 1 }, i);
       }
     }, container);
 
@@ -304,7 +315,8 @@ export function ServicesHorizontalScroll(): ReactElement {
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.15]"
           style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
           }}
           aria-hidden
@@ -316,7 +328,10 @@ export function ServicesHorizontalScroll(): ReactElement {
             className="svc-card-stack absolute inset-0 flex h-full w-full flex-col overflow-hidden bg-[#050505] will-change-transform"
             style={{
               zIndex: index + 1,
-              boxShadow: index > 0 ? "0 -20px 60px rgba(0,0,0,0.85), 0 -4px 20px rgba(0,0,0,0.5)" : "none",
+              boxShadow:
+                index > 0
+                  ? "0 -20px 60px rgba(0,0,0,0.85), 0 -4px 20px rgba(0,0,0,0.5)"
+                  : "none",
             }}
           >
             {/* On desktop we show the row layout, on mobile the column layout */}
@@ -330,19 +345,55 @@ export function ServicesHorizontalScroll(): ReactElement {
         ))}
 
         <div
-          className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2"
+          className="pointer-events-none absolute bottom-8 left-1/2 z-[30] flex -translate-x-1/2 items-center gap-[10px]"
           aria-hidden
         >
           {SERVICE_ITEMS.map((s, i) => (
             <div
               key={s.id}
-              className={
-                i === active
-                  ? "h-2 w-8 rounded-full bg-gradient-to-r from-[#ff008a] to-[#8b5cf6] opacity-100 transition-all duration-300"
-                  : "h-2 w-2 rounded-full bg-white/25 transition-all duration-300"
-              }
+              style={{
+                height: "6px",
+                width: active === i ? "28px" : "6px",
+                borderRadius: "9999px",
+                background:
+                  active === i
+                    ? "linear-gradient(90deg, #ff008a, #8b5cf6)"
+                    : "rgba(255,255,255,0.2)",
+                // Spring-like cubic-bezier — fast expand, gentle settle
+                transition:
+                  "width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), " +
+                  "background 0.3s ease",
+                flexShrink: 0,
+                willChange: "width",
+              }}
             />
           ))}
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            top: "32px",
+            right: "40px",
+            zIndex: 30,
+            fontFamily: "var(--font-space-grotesk)",
+            fontSize: "0.8rem",
+            letterSpacing: "0.08em",
+            color: "rgba(255,255,255,0.25)",
+            pointerEvents: "none",
+          }}
+          aria-hidden
+        >
+          <span
+            style={{
+              color: "#ff008a",
+              fontWeight: 700,
+            }}
+          >
+            {String(active + 1).padStart(2, "0")}
+          </span>
+          {" / "}
+          {String(SERVICE_ITEMS.length).padStart(2, "0")}
         </div>
       </div>
     </div>

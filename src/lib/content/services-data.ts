@@ -28,7 +28,7 @@ export const SERVICE_ITEMS: readonly ServiceItem[] = [
     n: "03",
     title: "Workflow Automation",
     description:
-      "End-to-end systems that eliminate repetitive tasks. Connect any tool, any platform, any process.",
+      "End-to-end pipelines that eliminate repetitive tasks. Connect any tool, any platform, any process.",
     tags: ["n8n", "Zapier", "REST APIs", "Webhooks"],
   },
   {

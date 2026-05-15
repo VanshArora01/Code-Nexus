@@ -13,7 +13,7 @@ const MANIFESTO = [
   },
   {
     lead: "Engineering taste",
-    text: "Readable systems, honest trade-offs, and infrastructure you can hand off. No mystery folders, no vendor lock-in cosplay.",
+    text: "Readable code, honest trade-offs, and infrastructure you can hand off. No mystery folders, no vendor lock-in cosplay.",
   },
   {
     lead: "Partners, not pixels",

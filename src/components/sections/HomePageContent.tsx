@@ -76,7 +76,7 @@ export function HomeTrustMarquee(): ReactElement {
 const SERVICE_BLOCKS = [
   { title: "Custom Websites", tag: "Build" },
   { title: "AI Chatbots", tag: "Automate" },
-  { title: "Workflow Systems", tag: "Scale" },
+  { title: "Workflow Pipelines", tag: "Scale" },
   { title: "SEO & Growth", tag: "Rank" },
 ] as const;
 
@@ -98,14 +98,13 @@ export function HomeServicesShowcase(): ReactElement {
             className="mt-5 font-heading font-black leading-[1.1] text-white"
             style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}
           >
-            Systems that ship —
+            Solutions that ship.
             <br />
-            websites, AI, automation.
+            AI, Web, and Automation.
           </h2>
           <p className="mt-6 max-w-md font-dm text-base leading-relaxed text-[#9CA3AF]">
-            From Ludhiana to clients worldwide — we engineer Next.js
-            experiences, grounded chatbots, and workflow infrastructure you can
-            operate with confidence.
+            From Ludhiana to partners worldwide — we engineer performance
+            tools that solve real business problems.
           </p>
           <Link
             href="/services"

@@ -66,7 +66,7 @@ export function AboutWhatWeDontDoSection(): ReactElement {
           className="mt-14 font-dm text-base italic leading-relaxed text-[#9CA3AF]"
         >
           If you want a cheap, fast, template-based website — we&apos;re
-          probably not your people. If you want a system that actually works for
+          probably not your people. If you want a solution that actually works for
           your business, let&apos;s talk.
         </motion.p>
       </div>

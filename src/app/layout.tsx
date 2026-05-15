@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Code Nexus | AI & Web Solutions",
     description:
-      "Expert AI automation and premium web development for modern businesses. Engineered for scale.",
+      "Expert AI automation and premium web development for global businesses. Engineered for scale.",
     url: "https://thecodenexus.qzz.io",
     siteName: "The Code Nexus",
     locale: "en_IN",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Code Nexus | AI & Web Solutions",
     description:
-      "Expert AI automation and premium web development for modern businesses.",
+      "Expert AI automation and premium web development for global businesses.",
     creator: "@thecodenexus",
   },
   robots: {

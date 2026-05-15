@@ -189,14 +189,14 @@ export function WorkShowcase(): ReactElement {
             Work with velocity.
           </h1>
           <p className="work-hero-copy mt-8 max-w-2xl font-dm text-base leading-relaxed text-white/55 md:text-lg">
-            Production systems we stand behind — web, AI, automation, and growth loops
+            Production builds we stand behind — web, AI, automation, and growth loops
             running for real users.
           </p>
           <p className="work-hero-meta mt-10 font-mono text-[0.65rem] uppercase tracking-[0.32em] text-white/28">
             Ludhiana · remote-first · detail-obsessed
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            {["Live systems", "AI-native", "Global delivery"].map((t) => (
+            {["Live builds", "AI-native", "Global delivery"].map((t) => (
               <span
                 key={t}
                 className="work-hero-chip rounded-full border border-white/[0.1] bg-white/[0.04] px-4 py-1.5 font-dm text-[0.72rem] tracking-wide text-white/55"

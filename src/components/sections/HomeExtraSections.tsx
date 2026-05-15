@@ -43,7 +43,7 @@ export function HomeHowItWorks(): ReactElement {
             className="mt-5 font-heading font-black leading-[1.15] text-white"
             style={{ fontSize: "clamp(2rem, 3.5vw, 3rem)" }}
           >
-            Three steps from idea to live system.
+            Three steps from idea to live product.
           </h2>
           <p className="mt-6 max-w-md font-dm text-base leading-relaxed text-[#9CA3AF]">
             We move fast without cutting corners. Most projects are live within
@@ -140,7 +140,7 @@ export function HomeTechApproach(): ReactElement {
       style: { fontSize: "clamp(2.5rem, 5vw, 5rem)" } as const,
     },
     {
-      text: "We engineer systems tailored to how your business actually works.",
+      text: "We engineer infrastructure tailored to how your business actually works.",
       className: "font-heading font-bold text-white/50",
       style: { fontSize: "clamp(1.5rem, 3vw, 2.8rem)" } as const,
     },

@@ -57,7 +57,7 @@ export function Footer(): ReactElement {
             Automate. Build. Scale.
           </p>
           <p className="mt-3 max-w-sm font-dm text-sm leading-relaxed text-[var(--text-body)]">
-            AI automation + web solutions for modern businesses.
+            AI automation + web solutions for scaling businesses.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             {SOCIAL.map(({ label, href, Icon }) => (
@@ -136,7 +136,7 @@ export function Footer(): ReactElement {
         <div className="flex flex-col justify-between gap-3 font-dm text-xs text-[#9CA3AF]/80 md:flex-row md:items-center">
           <p>© 2026 The Code Nexus. Serving Ludhiana, Punjab & India.</p>
           <p className="md:text-right">
-            Built with Next.js · Deployed on Vercel
+            Engineering the future of digital automation.
           </p>
         </div>
       </div>

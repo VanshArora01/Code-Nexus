@@ -9,7 +9,7 @@ import { ServiceSchema } from "@/components/seo/ServiceSchema";
 export const metadata: Metadata = {
   title: "AI Automation, Website Development & SEO Services",
   description:
-    "Explore our premium AI automation, custom website development, and SEO services in Ludhiana. We engineer scalable digital solutions for modern businesses.",
+    "Explore our premium AI automation, custom website development, and SEO services in Ludhiana. We engineer scalable digital solutions for scaling businesses.",
   alternates: {
     canonical: "/services",
   },

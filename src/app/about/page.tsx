@@ -8,7 +8,7 @@ import { PageHero } from "@/components/pages/PageHero";
 export const metadata: Metadata = {
   title: "About | Developer-Led Agency in Ludhiana",
   description:
-    "The Code Nexus is a developer-led agency in Ludhiana building AI-powered websites, chatbots, and automation systems for businesses worldwide.",
+    "The Code Nexus is a developer-led agency in Ludhiana building AI-powered websites, chatbots, and automation pipelines for businesses worldwide.",
   alternates: {
     canonical: "/about",
   },
@@ -28,7 +28,7 @@ export default function AboutPage(): ReactElement {
     <>
       <PageHero
         title={"We're The Code Nexus"}
-        subtitle="A small team of engineers who build AI-powered digital systems."
+        subtitle="A small team of engineers who build AI-powered digital products."
         minHeightClass="md:min-h-[50vh]"
       />
 
@@ -39,7 +39,7 @@ export default function AboutPage(): ReactElement {
             style={{ fontSize: "1.6rem", lineHeight: 1.5 }}
           >
             We started The Code Nexus because most agencies deliver slow, generic
-            websites. We wanted to build something different — systems that
+            websites. We wanted to build something different — products that
             actually think.
           </blockquote>
           <div className="text-left font-dm text-base leading-relaxed text-[#9CA3AF]">
