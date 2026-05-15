@@ -62,9 +62,6 @@ function ServiceShape({ index }: { index: number }): ReactElement {
   );
 }
 
-/* ─────────────────────────────────────────────────
-   Desktop panel — used inside horizontal scroll
-   ───────────────────────────────────────────────── */
 function ServicePanel({
   service,
   index,
@@ -75,9 +72,7 @@ function ServicePanel({
   const tint = BG_TINTS[index % BG_TINTS.length] ?? BG_TINTS[0];
 
   return (
-    <div
-      className="relative flex h-[100dvh] w-screen shrink-0 flex-col md:flex-row"
-    >
+    <div className="service-panel relative flex h-[100dvh] w-screen shrink-0 flex-col md:flex-row">
       <div className="flex flex-1 flex-col justify-center px-6 py-16 md:w-1/2 md:px-12 lg:px-16">
         <span
           className="pointer-events-none absolute left-4 top-24 font-heading font-black leading-none text-transparent opacity-[0.15] md:left-10 md:top-32"
@@ -147,9 +142,6 @@ function ServicePanel({
   );
 }
 
-/* ─────────────────────────────────────────────────
-   Mobile card content — rendered inside GSAP stack
-   ───────────────────────────────────────────────── */
 function MobileCardContent({
   service,
   index,
@@ -159,7 +151,6 @@ function MobileCardContent({
 }): ReactElement {
   return (
     <>
-      {/* Large ghost number */}
       <span
         className="pointer-events-none absolute left-4 top-20 font-heading font-black leading-none text-transparent opacity-[0.12]"
         style={{
@@ -173,7 +164,6 @@ function MobileCardContent({
         {service.n}
       </span>
 
-      {/* Content */}
       <div className="relative z-[1] flex flex-1 flex-col justify-center px-6 py-16">
         <p className="font-dm text-[0.7rem] font-medium uppercase tracking-[0.28em] text-pink">
           Service {service.n}
@@ -208,12 +198,10 @@ function MobileCardContent({
         </Link>
       </div>
 
-      {/* Decorative shape area */}
       <div className="relative flex h-[28vh] items-center justify-center">
         <ServiceShape index={index} />
       </div>
 
-      {/* Top-edge border glow for depth perception */}
       {index > 0 && (
         <div
           className="pointer-events-none absolute left-0 right-0 top-0 h-px"
@@ -228,40 +216,32 @@ function MobileCardContent({
   );
 }
 
-/* ─────────────────────────────────────────────────
-   Mobile stacked scroll — GSAP ScrollTrigger
-   
-   Mechanics:
-   - All cards are absolute-positioned inside a 
-     sticky 100dvh container.
-   - Card 0 starts visible (yPercent: 0).
-   - Cards 1–N start off-screen below (yPercent: 100).
-   - A scrubbed GSAP timeline drives transitions:
-     • Current card translates up by ~62%, leaving
-       ~38% visible (title + partial description).
-     • Next card translates from 100% to 0%.
-   - Increasing z-index ensures proper layering.
-   - Top shadow on each card creates depth.
-   ───────────────────────────────────────────────── */
-function MobileServicesStack(): ReactElement {
+export function ServicesHorizontalScroll(): ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      !containerRef.current ||
+      !stickyRef.current
+    )
+      return;
+
     registerGsapPlugins();
 
     const container = containerRef.current;
     const sticky = stickyRef.current;
-    if (!container || !sticky) return;
 
     const cards = gsap.utils.toArray<HTMLElement>(
-      ".mobile-svc-card",
-      sticky,
+      ".svc-card-stack",
+      sticky
     );
     const totalCards = cards.length;
     if (totalCards < 2) return;
 
-    // Initial positions: card 0 visible, rest off-screen below
+    // Set initial positions
     cards.forEach((card, i) => {
       gsap.set(card, { yPercent: i === 0 ? 0 : 100 });
     });
@@ -272,236 +252,99 @@ function MobileServicesStack(): ReactElement {
           trigger: container,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.4,
+          scrub: 0.6,
+          // NO pin: true here — CSS sticky handles pinning
           invalidateOnRefresh: true,
+          snap: {
+            snapTo: 1 / (totalCards - 1),
+            duration: { min: 0.3, max: 0.5 },
+            delay: 0.05,
+            ease: "power2.inOut",
+          },
+          onUpdate: (self) => {
+            const next = Math.min(
+              totalCards - 1,
+              Math.max(
+                0,
+                Math.round(self.progress * (totalCards - 1))
+              )
+            );
+            setActive(next);
+          },
         },
       });
 
-      // For each pair of consecutive cards, create a transition.
-      // Timeline total duration = totalCards - 1 (one unit per transition).
       for (let i = 0; i < totalCards - 1; i++) {
-        // Push the current card upward — leave ~38% visible at top
         tl.to(
           cards[i],
           { yPercent: -62, ease: "none", duration: 1 },
-          i, // starts at timeline time = i
+          i
         );
-        // Slide the next card up from below into full view
         tl.to(
           cards[i + 1],
           { yPercent: 0, ease: "none", duration: 1 },
-          i, // simultaneous with the push
+          i
         );
       }
     }, container);
 
-    return () => {
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="relative block md:hidden"
-      // Each card gets 100vh of scroll room, plus 50vh padding for first/last hold
-      style={{ height: `${SERVICE_ITEMS.length * 100 + 50}vh` }}
+      className="relative w-full bg-[#050505]"
+      style={{ height: `${SERVICE_ITEMS.length * 100}vh` }}
     >
       <div
         ref={stickyRef}
-        className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#050505]"
+        className="sticky top-0 h-[100dvh] w-full overflow-hidden"
       >
-        {/* Subtle grid overlay */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.15]"
           style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
           }}
           aria-hidden
         />
 
-        {/* Cards layer */}
         {SERVICE_ITEMS.map((service, index) => (
           <div
             key={service.id}
-            className="mobile-svc-card absolute inset-0 flex h-full w-full flex-col overflow-hidden bg-[#050505] will-change-transform"
+            className="svc-card-stack absolute inset-0 flex h-full w-full flex-col overflow-hidden bg-[#050505] will-change-transform"
             style={{
               zIndex: index + 1,
-              boxShadow:
-                index > 0
-                  ? "0 -20px 60px rgba(0,0,0,0.85), 0 -4px 20px rgba(0,0,0,0.5)"
-                  : "none",
+              boxShadow: index > 0 ? "0 -20px 60px rgba(0,0,0,0.85), 0 -4px 20px rgba(0,0,0,0.5)" : "none",
             }}
           >
-            <MobileCardContent service={service} index={index} />
+            {/* On desktop we show the row layout, on mobile the column layout */}
+            <div className="hidden md:block h-full w-full">
+              <ServicePanel service={service} index={index} />
+            </div>
+            <div className="block md:hidden h-full w-full">
+              <MobileCardContent service={service} index={index} />
+            </div>
           </div>
         ))}
 
-        {/* Dot indicators */}
         <div
-          className="pointer-events-none absolute bottom-6 left-1/2 z-[20] flex -translate-x-1/2 gap-2"
+          className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2"
           aria-hidden
-        />
+        >
+          {SERVICE_ITEMS.map((s, i) => (
+            <div
+              key={s.id}
+              className={
+                i === active
+                  ? "h-2 w-8 rounded-full bg-gradient-to-r from-[#ff008a] to-[#8b5cf6] opacity-100 transition-all duration-300"
+                  : "h-2 w-2 rounded-full bg-white/25 transition-all duration-300"
+              }
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
-}
-
-/* ─────────────────────────────────────────────────
-   Main export — renders desktop OR mobile version
-   ───────────────────────────────────────────────── */
-export function ServicesHorizontalScroll(): ReactElement {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0vw", "-500vw"]);
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const next = Math.min(
-      SERVICE_ITEMS.length - 1,
-      Math.max(0, Math.floor(v * SERVICE_ITEMS.length + 0.0001)),
-    );
-    setActive(next);
-  });
-
-  return (
-    <>
-      {/* Desktop Horizontal Scroll — unchanged */}
-      <div
-        ref={containerRef}
-        className="relative hidden md:block"
-        style={{ height: `${SERVICE_ITEMS.length * 100}vh` }}
-      >
-        <div className="sticky top-0 h-[100dvh] overflow-hidden bg-[#050505]">
-          <motion.div
-            className="flex h-full"
-            style={{
-              width: `${SERVICE_ITEMS.length * 100}vw`,
-              x,
-            }}
-          >
-            {SERVICE_ITEMS.map((service, index) => (
-              <ServicePanel key={service.id} service={service} index={index} />
-            ))}
-          </motion.div>
-
-          <div
-            className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2"
-            aria-hidden
-          >
-            {SERVICE_ITEMS.map((s, i) => (
-              <div
-                key={s.id}
-                className={
-                  i === active
-                    ? "h-2 w-8 rounded-full bg-gradient-to-r from-[#ff008a] to-[#8b5cf6] opacity-100 transition-all duration-300"
-                    : "h-2 w-2 rounded-full bg-white/25 transition-all duration-300"
-                }
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Auto-scroll logic for Desktop */}
-      <DesktopAutoScroll containerRef={containerRef} />
-
-      {/* Mobile — GSAP stacked progressive overlap */}
-      <MobileServicesStack />
-    </>
-  );
-}
-
-function DesktopAutoScroll({ 
-  containerRef 
-}: { 
-  containerRef: React.RefObject<HTMLDivElement | null> 
-}): null {
-  useEffect(() => {
-    if (typeof window === "undefined" || !containerRef.current) return;
-    registerGsapPlugins();
-
-    let timer: NodeJS.Timeout;
-    let isInView = false;
-    let isSwiping = false;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isInView = entry?.isIntersecting ?? false;
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(containerRef.current);
-
-    const performSwipe = () => {
-      if (!isInView || isSwiping || document.hidden) return;
-
-      const container = containerRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const currentScroll = window.scrollY;
-      const sectionStart = currentScroll + rect.top;
-      
-      const progress = Math.max(0, -rect.top / window.innerHeight);
-      const currentCard = Math.floor(progress + 0.1);
-      const totalCards = SERVICE_ITEMS.length;
-
-      if (currentCard < totalCards - 1) {
-        isSwiping = true;
-        const targetScroll = sectionStart + (currentCard + 1) * window.innerHeight;
-
-        gsap.to(window, {
-          scrollTo: { y: targetScroll, autoKill: true },
-          duration: 1.2,
-          ease: "power2.inOut",
-          onComplete: () => {
-            isSwiping = false;
-            timer = setTimeout(performSwipe, 4500); // Wait 4.5s on the new card
-          },
-          onInterrupt: () => {
-            isSwiping = false;
-            resetTimers();
-          }
-        });
-      }
-    };
-
-    const resetTimers = () => {
-      if (isSwiping) {
-        gsap.killTweensOf(window);
-        isSwiping = false;
-      }
-      clearTimeout(timer);
-      timer = setTimeout(performSwipe, 5000);
-    };
-
-    window.addEventListener("scroll", () => {
-      if (!isSwiping) resetTimers();
-    }, { passive: true });
-    
-    window.addEventListener("mousemove", resetTimers, { passive: true });
-    window.addEventListener("touchstart", resetTimers, { passive: true });
-
-    timer = setTimeout(performSwipe, 5000);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", resetTimers);
-      window.removeEventListener("mousemove", resetTimers);
-      window.removeEventListener("touchstart", resetTimers);
-      clearTimeout(timer);
-      gsap.killTweensOf(window);
-    };
-  }, [containerRef]);
-
-  return null;
 }

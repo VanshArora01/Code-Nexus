@@ -15,7 +15,9 @@ export const CAREER_ROLE_OPTIONS: readonly { value: CareerRoleId; label: string 
     { value: "fullstack", label: "Full Stack Developer" },
     { value: "ai-automation", label: "AI Automation Engineer" },
     { value: "ml", label: "Machine Learning Engineer" },
-    { value: "uiux", label: "UI/UX Designer" }
+    { value: "uiux", label: "UI/UX Designer" },
+    { value: "seo", label: "SEO & Digital Growth" },
+    { value: "other", label: "Other / Not Listed" },
   ] as const;
 
 export const CAREER_FAQ: readonly { q: string; a: string }[] = [

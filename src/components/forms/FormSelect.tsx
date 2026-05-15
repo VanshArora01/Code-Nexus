@@ -94,7 +94,12 @@ export function FormSelect({
         <ul
           id={`${id}-listbox`}
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[280px] overflow-y-auto overscroll-contain rounded-md border border-white/[0.12] bg-[#0c0c14] py-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.8)] animate-in fade-in zoom-in-95 duration-200"
+          data-lenis-prevent
+          className="dropdown-list absolute left-0 right-0 top-full z-50 mt-1 max-h-[280px] overflow-y-auto rounded-md border border-white/[0.12] bg-[#0c0c14] py-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.8)] animate-in fade-in zoom-in-95 duration-200"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
           {options.map((o) => (
             <li key={o.value} role="presentation">

@@ -15,6 +15,7 @@ import {
 } from "@/lib/lenis-instance";
 import { cn } from "@/lib/utils";
 import * as analytics from "@/lib/analytics";
+import { SITE_SOCIAL } from "@/lib/site-social";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -284,10 +285,10 @@ export function Navbar(): ReactElement {
                 <p className="mb-3 font-dm text-[0.6rem] font-bold uppercase tracking-[0.2em] text-white/30">
                   Socials
                 </p>
-                <div className="flex flex-col gap-2 font-dm text-sm text-white/60">
-                  <a href="#" className="transition-colors hover:text-pink">Twitter (X)</a>
-                  <a href="#" className="transition-colors hover:text-pink">LinkedIn</a>
-                  <a href="#" className="transition-colors hover:text-pink">GitHub</a>
+                <div className="flex flex-col gap-3 font-dm text-sm font-medium text-white/70">
+                  <a href={SITE_SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-pink">LinkedIn</a>
+                  <a href={SITE_SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-pink">Instagram</a>
+                  <a href={SITE_SOCIAL.whatsappCommunity} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-pink">WhatsApp</a>
                 </div>
               </div>
               <div className="flex flex-col items-end justify-end">

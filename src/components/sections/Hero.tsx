@@ -168,7 +168,7 @@ export default function Hero(): ReactElement {
               className="mt-5 font-heading font-black tracking-[-0.02em] text-white"
               style={{ fontSize: "clamp(2rem, 4.2vw, 3.5rem)", lineHeight: 1.08 }}
             >
-              Systems that <span style={gradientTextStyle}>think for you</span>
+              Intelligent automation that <span style={gradientTextStyle}>powers your growth</span>
             </h2>
             <p className="mt-5 font-dm text-[1.05rem] leading-relaxed text-[var(--text-body)]">
               AI automation, web development, and digital systems engineered for modern
