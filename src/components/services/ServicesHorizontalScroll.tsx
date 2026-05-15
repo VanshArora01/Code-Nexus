@@ -324,89 +324,40 @@ export function ServicesHorizontalScroll(): ReactElement {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current || !stickyRef.current || !horizontalRef.current) return;
     registerGsapPlugins();
 
     const container = containerRef.current;
-    const sticky = stickyRef.current;
     const horizontal = horizontalRef.current;
-
-    if (!container || !sticky || !horizontal) return;
+    const totalCards = SERVICE_ITEMS.length;
 
     const ctx = gsap.context(() => {
       // Desktop Horizontal Scroll
-      const tl = gsap.timeline({
+      gsap.to(horizontal, {
+        x: () => -(horizontal.offsetWidth - window.innerWidth),
+        ease: "none",
         scrollTrigger: {
           trigger: container,
           start: "top top",
           end: () => `+=${horizontal.offsetWidth - window.innerWidth}`,
-          scrub: 1,
+          scrub: 0.5,
+          pin: true,
           invalidateOnRefresh: true,
+          snap: {
+            snapTo: 1 / (totalCards - 1),
+            duration: { min: 0.2, max: 0.8 },
+            delay: 0.1,
+            ease: "power2.inOut",
+          },
           onUpdate: (self) => {
             const next = Math.min(
-              SERVICE_ITEMS.length - 1,
-              Math.max(0, Math.round(self.progress * (SERVICE_ITEMS.length - 1)))
+              totalCards - 1,
+              Math.max(0, Math.round(self.progress * (totalCards - 1)))
             );
             setActive(next);
           },
         },
       });
-
-      tl.to(horizontal, {
-        x: () => -(horizontal.offsetWidth - window.innerWidth),
-        ease: "none",
-      });
-
-      // Auto-scroll logic
-      let timer: NodeJS.Timeout;
-      let isSwiping = false;
-
-      const performSwipe = () => {
-        if (isSwiping || document.hidden) return;
-        const st = ScrollTrigger.getAll().find((s) => s.trigger === container);
-        if (!st || !st.isActive) return;
-
-        const currentCard = Math.round(st.progress * (SERVICE_ITEMS.length - 1));
-        if (currentCard < SERVICE_ITEMS.length - 1) {
-          isSwiping = true;
-          const targetProgress = (currentCard + 1) / (SERVICE_ITEMS.length - 1);
-          const targetScroll = st.start + (st.end - st.start) * targetProgress;
-
-          gsap.to(window, {
-            scrollTo: { y: targetScroll, autoKill: true },
-            duration: 1.5,
-            ease: "power2.inOut",
-            onComplete: () => {
-              isSwiping = false;
-              timer = setTimeout(performSwipe, 6000);
-            },
-            onInterrupt: () => {
-              isSwiping = false;
-              resetTimers();
-            },
-          });
-        }
-      };
-
-      const resetTimers = () => {
-        if (isSwiping) {
-          gsap.killTweensOf(window);
-          isSwiping = false;
-        }
-        clearTimeout(timer);
-        timer = setTimeout(performSwipe, 7000);
-      };
-
-      window.addEventListener("wheel", resetTimers, { passive: true });
-      window.addEventListener("touchstart", resetTimers, { passive: true });
-      window.addEventListener("scroll", () => { if(!isSwiping) resetTimers(); }, { passive: true });
-
-      timer = setTimeout(performSwipe, 6000);
-
-      return () => {
-        window.removeEventListener("wheel", resetTimers);
-        window.removeEventListener("touchstart", resetTimers);
-        clearTimeout(timer);
-      };
     }, container);
 
     return () => ctx.revert();
@@ -418,9 +369,8 @@ export function ServicesHorizontalScroll(): ReactElement {
       <div
         ref={containerRef}
         className="relative hidden md:block"
-        style={{ height: `${SERVICE_ITEMS.length * 100}vh` }}
       >
-        <div ref={stickyRef} className="sticky top-0 h-[100dvh] overflow-hidden bg-[#050505]">
+        <div ref={stickyRef} className="h-[100dvh] w-full overflow-hidden bg-[#050505]">
           <div ref={horizontalRef} className="flex h-full will-change-transform">
             {SERVICE_ITEMS.map((service, index) => (
               <ServicePanel key={service.id} service={service} index={index} />
