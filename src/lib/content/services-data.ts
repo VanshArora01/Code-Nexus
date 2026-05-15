@@ -1,6 +1,6 @@
 export type ServiceItem = {
   readonly id: string;
-  readonly n: "01" | "02" | "03" | "04" | "05" | "06";
+  readonly n: "01" | "02" | "03" | "04" | "05" | "06" | "07";
   readonly title: string;
   readonly description: string;
   readonly tags: readonly string[];
@@ -54,5 +54,13 @@ export const SERVICE_ITEMS: readonly ServiceItem[] = [
     description:
       "Data-driven SEO and content strategies that compound your organic visibility over time.",
     tags: ["Technical SEO", "Content", "Analytics", "Core Web Vitals"],
+  },
+  {
+    id: "software-solutions",
+    n: "07",
+    title: "Software Solutions",
+    description:
+      "Custom ERP systems, inventory management, and bespoke business software engineered for your specific operations.",
+    tags: ["ERP", "Inventory", "Dashboards", "Bespoke"],
   },
 ] as const;

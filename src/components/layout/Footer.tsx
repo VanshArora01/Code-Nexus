@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import * as analytics from "@/lib/analytics";
 import type { ReactElement } from "react";
 
@@ -41,9 +42,11 @@ export function Footer(): ReactElement {
             href="/"
             className="group inline-flex items-center gap-3 transition-transform active:scale-95"
           >
-            <img 
+            <Image 
               src="/image.png" 
               alt="The Code Nexus Logo" 
+              width={32}
+              height={32}
               className="h-8 w-auto" 
             />
             <span className="flex items-baseline gap-0 font-heading text-lg font-bold tracking-tight">

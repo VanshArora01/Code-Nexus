@@ -17,6 +17,7 @@ import {
 
 import { SERVICE_ITEMS, type ServiceItem } from "@/lib/content/services-data";
 import { gsap, registerGsapPlugins, ScrollTrigger } from "@/lib/gsap";
+import { cn } from "@/lib/utils";
 
 const BG_TINTS: readonly string[] = [
   "rgba(255,0,138,0.04)",
@@ -164,7 +165,10 @@ function MobileCardContent({
         {service.n}
       </span>
 
-      <div className="relative z-[1] flex flex-1 flex-col justify-center px-6 py-16">
+      <div className={cn(
+        "relative z-[1] flex flex-1 flex-col justify-center px-6 py-16",
+        index === 0 && "pt-24"
+      )}>
         <p className="font-dm text-[0.7rem] font-medium uppercase tracking-[0.28em] text-pink">
           Service {service.n}
         </p>

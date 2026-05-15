@@ -76,8 +76,8 @@ function HeroBackground(): ReactElement {
 
 
 
-      {/* Floating Particles */}
-      {[
+      {/* Floating Particles - only render on desktop */}
+      {typeof window !== "undefined" && window.innerWidth >= 768 && [
         {
           top: "75%",
           left: "12%",
@@ -189,7 +189,7 @@ function HeroBackground(): ReactElement {
       ].map((p, i) => (
         <div
           key={i}
-          className="pointer-events-none absolute rounded-full blur-[0.5px] z-[5] hidden md:block"
+          className="pointer-events-none absolute rounded-full blur-[0.5px] z-[5]"
           style={
             {
               top: p.top,
@@ -209,6 +209,7 @@ function HeroBackground(): ReactElement {
       <div className="pointer-events-none absolute right-[24px] top-[24px] z-[6] h-[40px] w-[40px] border-r border-t border-[rgba(139,92,246,0.25)] hidden md:block" />
       <div className="pointer-events-none absolute bottom-[24px] left-[24px] z-[6] h-[40px] w-[40px] border-b border-l border-[rgba(139,92,246,0.2)] hidden md:block" />
       <div className="pointer-events-none absolute bottom-[24px] right-[24px] z-[6] h-[40px] w-[40px] border-b border-r border-[rgba(255,0,138,0.2)] hidden md:block" />
+
     </>
   );
 }
@@ -227,29 +228,34 @@ export default function Hero(): ReactElement {
     if (!wrapper || !topHalf || !bottomHalf) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapper,
-          start: "top top",
-          end: "+=130%",
-          scrub: 0.35,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+      // Performance: Only run split pinning on desktop
+      const isDesktop = window.innerWidth >= 768;
+      
+      if (isDesktop) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: "top top",
+            end: "+=130%",
+            scrub: 0.35,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
 
-      tl.to(
-        topHalf,
-        { yPercent: -100, ease: "none", duration: 1, force3D: true },
-        0
-      );
-      tl.to(
-        bottomHalf,
-        { yPercent: 100, ease: "none", duration: 1, force3D: true },
-        0
-      );
+        tl.to(
+          topHalf,
+          { yPercent: -100, ease: "none", duration: 1, force3D: true },
+          0
+        );
+        tl.to(
+          bottomHalf,
+          { yPercent: 100, ease: "none", duration: 1, force3D: true },
+          0
+        );
+      }
     }, wrapper);
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -269,7 +275,7 @@ export default function Hero(): ReactElement {
       {/* Split hero (responsive for both desktop and mobile) */}
       <div
         ref={wrapperRef}
-        className="relative h-[100dvh] w-full overflow-hidden"
+        className="relative h-[100dvh] w-full overflow-hidden md:h-screen"
       >
         {/* New Revealed Section Design */}
         <div
@@ -673,7 +679,7 @@ export default function Hero(): ReactElement {
               transition={{ duration: 0.45, delay: 0.72 }}
               className="mt-4 font-dm text-[0.55rem] uppercase tracking-[0.15em] text-white/25 md:mt-6 md:text-[0.62rem] md:tracking-[0.2em] hidden md:block"
             >
-              5+ projects · 2 hackathon wins · AI-first delivery
+              5+ projects · AI-first delivery · Performance optimized
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 14 }}

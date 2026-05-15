@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   useEffect,
@@ -93,9 +94,12 @@ export function Navbar(): ReactElement {
           className="group relative z-[120] flex items-center gap-3 transition-transform active:scale-95"
           onClick={() => setOpen(false)}
         >
-          <img 
+          <Image 
             src="/image.png" 
             alt="The Code Nexus Logo" 
+            width={40}
+            height={40}
+            priority
             className="h-9 w-auto md:h-10" 
           />
           <span className="flex items-baseline gap-0 font-heading text-lg font-bold tracking-tight">

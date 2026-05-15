@@ -40,8 +40,8 @@ export const WORK_BENTO_PROJECTS: readonly WorkBentoProject[] = [
     description:
       "Real-time coordination platform built in 48 hours. Live alerts, resource routing, and dashboards built for pressure — not prototypes.",
     tags: ["React", "Node.js", "WebSockets", "MongoDB"],
-    projectType: "Hackathon",
-    badge: "1st Place Hackathon 2025",
+    projectType: "Live Product",
+    badge: "Coordination Platform 2025",
     year: "2025",
     href: "/contact",
     external: false,

@@ -101,6 +101,16 @@ export default function RootLayout({
       className={`dark ${dmSans.variable} ${spaceGrotesk.variable} ${geistMono.variable} h-full scroll-smooth`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
+            <link rel="preconnect" href="https://www.google-analytics.com" />
+          </>
+        )}
+      </head>
       <body className="min-h-full bg-bg font-dm text-white antialiased">
         <SmoothScroll>
           <div className="flex min-h-screen flex-col bg-bg">
