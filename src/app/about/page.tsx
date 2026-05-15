@@ -6,9 +6,12 @@ import { AboutWhatWeDontDoSection } from "@/components/sections/AboutExtraSectio
 import { PageHero } from "@/components/pages/PageHero";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About | Developer-Led Agency in Ludhiana",
   description:
-    "Code Nexus is a developer-led team from Ludhiana building AI-powered websites, chatbots, and automation systems.",
+    "The Code Nexus is a developer-led agency in Ludhiana building AI-powered websites, chatbots, and automation systems for businesses worldwide.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 const STACK_A =
@@ -24,7 +27,7 @@ export default function AboutPage(): ReactElement {
   return (
     <>
       <PageHero
-        title={"We're Code Nexus"}
+        title={"We're The Code Nexus"}
         subtitle="A small team of engineers who build AI-powered digital systems."
         minHeightClass="md:min-h-[50vh]"
       />
@@ -35,7 +38,7 @@ export default function AboutPage(): ReactElement {
             className="border-l-[3px] border-pink pl-8 text-left font-heading text-white"
             style={{ fontSize: "1.6rem", lineHeight: 1.5 }}
           >
-            We started Code Nexus because most agencies deliver slow, generic
+            We started The Code Nexus because most agencies deliver slow, generic
             websites. We wanted to build something different — systems that
             actually think.
           </blockquote>

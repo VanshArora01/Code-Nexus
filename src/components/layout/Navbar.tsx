@@ -14,6 +14,7 @@ import {
   resumeGlobalLenis,
 } from "@/lib/lenis-instance";
 import { cn } from "@/lib/utils";
+import * as analytics from "@/lib/analytics";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -92,12 +93,12 @@ export function Navbar(): ReactElement {
           onClick={() => setOpen(false)}
         >
           <img 
-            src="/logo.svg" 
-            alt="Code Nexus Logo" 
+            src="/image.png" 
+            alt="The Code Nexus Logo" 
             className="h-9 w-auto md:h-10" 
           />
           <span className="flex items-baseline gap-0 font-heading text-lg font-bold tracking-tight">
-            <span className="text-white">Code</span>
+            <span className="text-white">The Code</span>
             <span className="bg-gradient-to-r from-pink via-fuchsia to-purple bg-clip-text text-transparent">
               Nexus
             </span>
@@ -128,10 +129,16 @@ export function Navbar(): ReactElement {
             );
           })}
         </div>
-
         <div className="hidden md:block">
           <Link
             href="/contact"
+            onClick={() => {
+              analytics.event({
+                action: "navbar_cta_click",
+                category: "Engagement",
+                label: "Get Started",
+              });
+            }}
             className="group relative inline-flex items-center gap-1 text-sm font-semibold text-white/90 transition-colors hover:text-white"
           >
             <span className="relative">
@@ -286,7 +293,14 @@ export function Navbar(): ReactElement {
               <div className="flex flex-col items-end justify-end">
                 <Link
                   href="/contact"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    analytics.event({
+                      action: "navbar_cta_click",
+                      category: "Engagement",
+                      label: "Mobile Start Project",
+                    });
+                  }}
                   className="group relative inline-flex h-14 w-full items-center justify-center overflow-hidden rounded-full bg-white/[0.04] font-heading text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/[0.08] active:scale-[0.98]"
                 >
                   <span className="relative z-10">Start Project</span>

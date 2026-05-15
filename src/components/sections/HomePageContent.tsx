@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import type { ReactElement } from "react";
 import { WORK_BENTO_PROJECTS } from "@/lib/content/projects-data";
+import * as analytics from "@/lib/analytics";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const view = { once: true, margin: "-80px" } as const;
@@ -108,6 +109,13 @@ export function HomeServicesShowcase(): ReactElement {
           </p>
           <Link
             href="/services"
+            onClick={() => {
+              analytics.event({
+                action: "home_content_link_click",
+                category: "Engagement",
+                label: "Explore all services",
+              });
+            }}
             className="group/ex mt-8 inline-flex items-center gap-2 font-heading text-sm font-semibold text-pink transition-colors hover:text-white"
           >
             Explore all services
@@ -201,6 +209,13 @@ export function HomeFeaturedWork(): ReactElement {
           </motion.div>
           <Link
             href="/work"
+            onClick={() => {
+              analytics.event({
+                action: "home_content_link_click",
+                category: "Engagement",
+                label: "View all work",
+              });
+            }}
             className="group flex items-center gap-3 font-heading text-xs font-bold uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
           >
             View all work

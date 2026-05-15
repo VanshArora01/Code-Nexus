@@ -3,6 +3,7 @@
 import { type ReactElement, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import * as analytics from "@/lib/analytics";
 
 import { gsap, registerGsapPlugins, ScrollTrigger } from "@/lib/gsap";
 
@@ -175,6 +176,13 @@ export default function Hero(): ReactElement {
             </p>
             <Link
               href="/services"
+              onClick={() => {
+                analytics.event({
+                  action: "hero_cta_click",
+                  category: "Engagement",
+                  label: "Explore Services Main",
+                });
+              }}
               className="mt-9 inline-block rounded-md bg-gradient-to-r from-pink via-fuchsia to-purple px-9 py-3.5 font-dm text-[0.95rem] font-semibold text-white shadow-glow-pink transition-transform hover:-translate-y-0.5"
             >
               Explore Services →
@@ -239,7 +247,7 @@ export default function Hero(): ReactElement {
             >
               <span className="h-px w-8 bg-white/15 md:w-10" />
               <span className="font-dm text-[0.55rem] uppercase tracking-[0.3em] text-white/35 md:text-[0.62rem] md:tracking-[0.36em]">
-                Code Nexus
+                The Code Nexus
               </span>
               <span className="h-px w-8 bg-white/15 md:w-10" />
             </motion.div>
@@ -354,10 +362,30 @@ export default function Hero(): ReactElement {
               transition={{ duration: 0.5, delay: 0.85 }}
               className="mt-6 flex flex-wrap items-center justify-center gap-2 md:mt-8 md:gap-3"
             >
-              <Link href="/contact" className={ctaPrimaryClass}>
+              <Link 
+                href="/contact" 
+                onClick={() => {
+                  analytics.event({
+                    action: "hero_cta_click",
+                    category: "Engagement",
+                    label: "Book a Consultation",
+                  });
+                }}
+                className={ctaPrimaryClass}
+              >
                 Book a Consultation
               </Link>
-              <Link href="/services" className={ctaGhostClass}>
+              <Link 
+                href="/services" 
+                onClick={() => {
+                  analytics.event({
+                    action: "hero_cta_click",
+                    category: "Engagement",
+                    label: "Explore Solutions",
+                  });
+                }}
+                className={ctaGhostClass}
+              >
                 Explore Solutions
               </Link>
             </motion.div>

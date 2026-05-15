@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://codenexus.agency";
+  const baseUrl = "https://thecodenexus.qzz.io";
   
   const routes = [
     "",

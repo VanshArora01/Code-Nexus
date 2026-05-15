@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import * as analytics from "@/lib/analytics";
 import type { ReactElement } from "react";
 
 import {
@@ -36,17 +39,16 @@ export function Footer(): ReactElement {
         <div className="md:col-span-5 lg:col-span-5">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 font-heading text-lg font-bold text-white"
+            className="group inline-flex items-center gap-3 transition-transform active:scale-95"
           >
-            <span
-              className="bg-gradient-to-br from-pink to-purple bg-clip-text font-mono text-xl text-transparent"
-              aria-hidden
-            >
-              &lt;/&gt;
-            </span>
-            <span className="flex items-baseline gap-0">
-              <span className="text-white">Code</span>
-              <span className="bg-gradient-to-r from-pink to-purple bg-clip-text text-transparent">
+            <img 
+              src="/image.png" 
+              alt="The Code Nexus Logo" 
+              className="h-8 w-auto" 
+            />
+            <span className="flex items-baseline gap-0 font-heading text-lg font-bold tracking-tight">
+              <span className="text-white">The Code</span>
+              <span className="bg-gradient-to-r from-pink via-fuchsia to-purple bg-clip-text text-transparent">
                 Nexus
               </span>
             </span>
@@ -109,8 +111,16 @@ export function Footer(): ReactElement {
             >
               WhatsApp community
             </a>
+
             <Link
               href="/contact"
+              onClick={() => {
+                analytics.event({
+                  action: "footer_cta_click",
+                  category: "Engagement",
+                  label: "Book a Call",
+                });
+              }}
               className="group/call mt-2 inline-flex w-fit items-center gap-1 font-heading text-sm font-semibold text-white transition-colors hover:text-pink"
             >
               Book a Call
@@ -124,7 +134,7 @@ export function Footer(): ReactElement {
 
       <div className="mx-auto mt-16 max-w-[1200px] border-t border-white/[0.06] px-4 pt-8 md:px-6 lg:px-8">
         <div className="flex flex-col justify-between gap-3 font-dm text-xs text-[#9CA3AF]/80 md:flex-row md:items-center">
-          <p>© 2026 Code Nexus. All rights reserved.</p>
+          <p>© 2026 The Code Nexus. Serving Ludhiana, Punjab & India.</p>
           <p className="md:text-right">
             Built with Next.js · Deployed on Vercel
           </p>

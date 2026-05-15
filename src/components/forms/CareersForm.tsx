@@ -48,6 +48,8 @@ const initialForm: Partial<CareersFormData> = {
   consent: false,
 };
 
+import * as analytics from "@/lib/analytics";
+
 export function CareersForm(): ReactElement {
   const [form, setForm] = useState(initialForm);
   const [honeypot, setHoneypot] = useState("");
@@ -108,6 +110,12 @@ export function CareersForm(): ReactElement {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate() || state.submitting || uploadStatus === "uploading") return;
+
+    analytics.event({
+      action: "careers_form_submission",
+      category: "Recruitment",
+      label: form.role || "Unknown Role",
+    });
 
     const formData = new FormData(e.currentTarget);
     formData.append("resume_url", cloudinaryUrl);
@@ -272,7 +280,7 @@ export function CareersForm(): ReactElement {
         error={errors.about}
         multiline
         rows={6}
-        hint="Tell us about your background and why Code Nexus."
+        hint="Tell us about your background and why The Code Nexus."
       />
 
       <div>

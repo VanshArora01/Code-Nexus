@@ -46,7 +46,7 @@ export function CareersHero({ onStartClick }: CareersHeroProps): ReactElement {
               with us.
             </h1>
             <p className="mt-8 max-w-2xl font-dm text-base leading-relaxed text-white/55 md:text-lg">
-              Code Nexus is a startup team obsessed with AI automation, custom web
+              The Code Nexus is a startup team obsessed with AI automation, custom web
               builds, chatbots, workflows, machine learning, and SEO-led growth.
               Use the form below to introduce yourself — we read every submission.
             </p>

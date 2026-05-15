@@ -163,7 +163,7 @@ export function HomeTechApproach(): ReactElement {
           {...reveal}
           className="font-dm text-[0.7rem] font-medium uppercase tracking-[0.35em] text-pink"
         >
-          Why Code Nexus
+          Why The Code Nexus
         </motion.p>
         <div className="mt-12 space-y-10 md:space-y-12">
           {statements.map((s, i) => (

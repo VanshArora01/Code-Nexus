@@ -5,6 +5,10 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
+import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { Suspense } from "react";
+
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -26,25 +30,63 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://thecodenexus.qzz.io"),
   title: {
-    default: "Code Nexus | Automate. Build. Scale.",
-    template: "%s | Code Nexus",
+    default: "The Code Nexus | AI Automation, Website Development & SEO in Ludhiana",
+    template: "%s | The Code Nexus",
   },
   description:
-    "AI automation and web solutions for modern businesses — Next.js sites, chatbots, and workflow systems engineered in Ludhiana, India.",
+    "The Code Nexus helps businesses in Ludhiana and across India with AI automation, custom websites, SEO optimization, and scalable digital solutions.",
   keywords: [
-    "AI automation",
-    "web development",
-    "Next.js",
-    "Code Nexus",
-    "Ludhiana",
-    "n8n",
+    "AI automation company Ludhiana",
+    "website development company Ludhiana",
+    "SEO agency Ludhiana",
+    "web design Ludhiana",
+    "digital solutions Punjab",
+    "automation agency India",
+    "The Code Nexus",
+    "Next.js development India",
   ],
+  authors: [{ name: "The Code Nexus Team" }],
+  creator: "The Code Nexus",
+  publisher: "The Code Nexus",
+  alternates: {
+    canonical: "/",
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
+  icons: {
+    icon: "/image.png",
+    shortcut: "/image.png",
+    apple: "/image.png",
+  },
   openGraph: {
-    title: "Code Nexus",
+    title: "The Code Nexus | AI & Web Solutions",
     description:
-      "AI automation and web solutions for modern businesses — engineered for performance.",
+      "Expert AI automation and premium web development for modern businesses. Engineered for scale.",
+    url: "https://thecodenexus.qzz.io",
+    siteName: "The Code Nexus",
+    locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Code Nexus | AI & Web Solutions",
+    description:
+      "Expert AI automation and premium web development for modern businesses.",
+    creator: "@thecodenexus",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -67,6 +109,10 @@ export default function RootLayout({
             <Footer />
           </div>
         </SmoothScroll>
+        <Suspense>
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+        </Suspense>
+        <StructuredData />
       </body>
     </html>
   );

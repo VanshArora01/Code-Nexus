@@ -410,8 +410,98 @@ export function ServicesHorizontalScroll(): ReactElement {
         </div>
       </div>
 
+      {/* Auto-scroll logic for Desktop */}
+      <DesktopAutoScroll containerRef={containerRef} />
+
       {/* Mobile — GSAP stacked progressive overlap */}
       <MobileServicesStack />
     </>
   );
+}
+
+function DesktopAutoScroll({ 
+  containerRef 
+}: { 
+  containerRef: React.RefObject<HTMLDivElement | null> 
+}): null {
+  useEffect(() => {
+    if (typeof window === "undefined" || !containerRef.current) return;
+    registerGsapPlugins();
+
+    let timer: NodeJS.Timeout;
+    let isInView = false;
+    let isSwiping = false;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry?.isIntersecting ?? false;
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(containerRef.current);
+
+    const performSwipe = () => {
+      if (!isInView || isSwiping || document.hidden) return;
+
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const currentScroll = window.scrollY;
+      const sectionStart = currentScroll + rect.top;
+      
+      const progress = Math.max(0, -rect.top / window.innerHeight);
+      const currentCard = Math.floor(progress + 0.1);
+      const totalCards = SERVICE_ITEMS.length;
+
+      if (currentCard < totalCards - 1) {
+        isSwiping = true;
+        const targetScroll = sectionStart + (currentCard + 1) * window.innerHeight;
+
+        gsap.to(window, {
+          scrollTo: { y: targetScroll, autoKill: true },
+          duration: 1.2,
+          ease: "power2.inOut",
+          onComplete: () => {
+            isSwiping = false;
+            timer = setTimeout(performSwipe, 4500); // Wait 4.5s on the new card
+          },
+          onInterrupt: () => {
+            isSwiping = false;
+            resetTimers();
+          }
+        });
+      }
+    };
+
+    const resetTimers = () => {
+      if (isSwiping) {
+        gsap.killTweensOf(window);
+        isSwiping = false;
+      }
+      clearTimeout(timer);
+      timer = setTimeout(performSwipe, 5000);
+    };
+
+    window.addEventListener("scroll", () => {
+      if (!isSwiping) resetTimers();
+    }, { passive: true });
+    
+    window.addEventListener("mousemove", resetTimers, { passive: true });
+    window.addEventListener("touchstart", resetTimers, { passive: true });
+
+    timer = setTimeout(performSwipe, 5000);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", resetTimers);
+      window.removeEventListener("mousemove", resetTimers);
+      window.removeEventListener("touchstart", resetTimers);
+      clearTimeout(timer);
+      gsap.killTweensOf(window);
+    };
+  }, [containerRef]);
+
+  return null;
 }

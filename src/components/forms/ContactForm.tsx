@@ -19,6 +19,8 @@ const NEED_OPTIONS = [
   { value: "Not sure yet", label: "Not sure yet — let’s talk" },
 ] as const;
 
+import * as analytics from "@/lib/analytics";
+
 const initialForm: ContactFormData = {
   name: "",
   email: "",
@@ -57,6 +59,13 @@ export function ContactForm(): ReactElement {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate() || state.submitting) return;
+    
+    analytics.event({
+      action: "contact_form_submission",
+      category: "Lead Generation",
+      label: form.need || "General Inquiry",
+    });
+
     await handleSubmit(e);
   };
 

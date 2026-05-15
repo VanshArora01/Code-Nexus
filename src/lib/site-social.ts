@@ -1,4 +1,4 @@
-/** Official Code Nexus channels */
+/** Official The Code Nexus channels */
 
 export const SITE_EMAIL = "thecodenexus7@gmail.com" as const;
 

@@ -14,9 +14,12 @@ import {
 } from "@/components/sections/HomeExtraSections";
 
 export const metadata: Metadata = {
-  title: "Automate. Build. Scale.",
+  title: "The Code Nexus | AI Automation, Website Development & SEO Solutions in Ludhiana",
   description:
-    "Code Nexus builds Next.js websites, AI chatbots, and automation systems for modern businesses — engineered in Ludhiana, India.",
+    "The Code Nexus helps businesses in Ludhiana and across India with AI automation, custom websites, SEO optimization, and scalable digital solutions. Engineered for performance and growth.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function HomePage(): ReactElement {

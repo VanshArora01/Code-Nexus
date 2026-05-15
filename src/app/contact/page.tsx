@@ -4,9 +4,12 @@ import type { ReactElement } from "react";
 import { ContactClient } from "@/components/sections/contact/ContactClient";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact | AI & Digital Solutions Agency in Ludhiana",
   description:
-    "Contact Code Nexus — email thecodenexus7@gmail.com, WhatsApp community, LinkedIn, or send a project brief. We reply within 24 hours.",
+    "Get in touch with The Code Nexus in Ludhiana for AI automation, custom web development, and SEO services. Let's build your next digital system together.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage(): ReactElement {

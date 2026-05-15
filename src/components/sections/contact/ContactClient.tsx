@@ -91,7 +91,7 @@ export function ContactClient(): ReactElement {
               className="group/wa relative mt-2 inline-block font-dm text-[1.05rem] font-medium text-white transition-colors duration-300"
             >
               <span className="group-hover/wa:text-pink">
-                Join the Code Nexus WhatsApp
+                Join The Code Nexus WhatsApp
               </span>
             </a>
           </div>

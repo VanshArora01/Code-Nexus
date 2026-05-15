@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { ReactElement } from "react";
+import * as analytics from "@/lib/analytics";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const view = { once: true, margin: "-80px" } as const;
@@ -51,8 +52,16 @@ export function HomeCTA(): ReactElement {
             Tell us what you&apos;re building. We respond within 24 hours.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
+
             <Link
               href="/contact"
+              onClick={() => {
+                analytics.event({
+                  action: "cta_click",
+                  category: "Engagement",
+                  label: "Book a Free Call",
+                });
+              }}
               className="inline-flex items-center justify-center rounded px-8 py-3.5 font-dm font-semibold text-white transition-[filter,transform] duration-200 hover:brightness-110 hover:-translate-y-0.5"
               style={{
                 background: "linear-gradient(135deg, #ff008a, #8b5cf6)",
@@ -62,6 +71,13 @@ export function HomeCTA(): ReactElement {
             </Link>
             <Link
               href="/work"
+              onClick={() => {
+                analytics.event({
+                  action: "cta_click",
+                  category: "Engagement",
+                  label: "See Our Work",
+                });
+              }}
               className="inline-flex items-center justify-center gap-1 rounded border border-white/25 px-8 py-3.5 font-dm font-semibold text-white transition-[border-color,transform] duration-200 hover:border-pink/40 hover:-translate-y-0.5"
             >
               See Our Work
